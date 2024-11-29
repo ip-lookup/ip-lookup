@@ -30,16 +30,16 @@ describe('ipLookup', () => {
     expect.soft(result).not.toBeNull()
     expect.soft(result).toEqual({
       country: 'US',
-      latitude: 38.9072,
-      longitude: -77.0369,
+      latitude: 38.9757,
+      longitude: -77.6414,
     })
 
     const result2 = await IpLookup('2607:F8B0:4005:801::200E')
     expect.soft(result2).not.toBeNull()
     expect.soft(result2).toEqual({
       country: 'US',
-      latitude: 37.422,
-      longitude: -122.084,
+      latitude: 42.3562,
+      longitude: -71.0631,
     })
 
     await expect.soft(IpLookup('invalid')).rejects.toThrow('Invalid IPv4 address: invalid')

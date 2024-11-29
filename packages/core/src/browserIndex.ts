@@ -1,6 +1,7 @@
 import { Buffer } from 'node:buffer'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { countryCodeToNumber } from './functions/countryCodeToNumber.js'
 import { getSettings, type IpLocationApiInputSettings, type IpLocationApiSettings, processDirectory } from './functions/getSettings.js'
 import { numberToDir } from './functions/numberToDir.js'
 
@@ -43,6 +44,7 @@ async function processIpVersion(
   const startBuf = await readFile(join(settings.fieldDir, `${ipVersion}-1.dat`))
   const endBuf = await readFile(join(settings.fieldDir, `${ipVersion}-2.dat`))
   const dbInfo = await readFile(join(settings.fieldDir, `${ipVersion}-3.dat`))
+  const locationInfo = type === 'country' ? null : await readFile(join(settings.fieldDir, `location.dat`))
 
   //* Create typed arrays for efficient data processing
   const startList = ipVersion === '4' ? new Uint32Array(startBuf.buffer) : new BigUint64Array(startBuf.buffer)
@@ -61,6 +63,7 @@ async function processIpVersion(
     const count = nextIndex - index
 
     const exportBuf = Buffer.alloc(recordSize * count)
+    let previousCountryCode = ''
     for (let j = index, k = 0; j < nextIndex; ++j) {
       //* Write start and end IP addresses
       if (ipVersion === '4') {
@@ -73,13 +76,28 @@ async function processIpVersion(
       }
 
       //* Write country or geocode data
-      const offset = (ipVersion === '4' ? 8 : 16) * count + k * settings.mainRecordSize
+      const line = (ipVersion === '4' ? 8 : 16) * count + k * settings.mainRecordSize
       if (type === 'country') {
-        exportBuf.writeUInt16LE(dbList[j]!, offset)
+        exportBuf.writeUInt16LE(dbList[j]!, line)
       }
       else {
-        exportBuf.writeInt32LE(dbList[2 * j]!, offset)
-        exportBuf.writeInt32LE(dbList[2 * j + 1]!, offset + 4)
+        const offset = line * settings.mainRecordSize
+
+        const locationId = dbInfo.readUInt32LE(offset)
+        const latitude = dbInfo.readInt32LE(offset + 4)
+        const longitude = dbInfo.readInt32LE(offset + 8)
+
+        const locationOffset = (locationId - 1) * settings.locationRecordSize
+        let countryCode = locationInfo!.toString('utf8', locationOffset, locationOffset + 2)
+        if (countryCode === '\x00\x00')
+          countryCode = previousCountryCode
+
+        previousCountryCode = countryCode
+
+        const latitudeWithCountryCode = (latitude << 10) | countryCodeToNumber(countryCode)
+
+        exportBuf.writeInt32LE(latitudeWithCountryCode, line)
+        exportBuf.writeInt32LE(longitude, line + 4)
       }
       ++k
     }

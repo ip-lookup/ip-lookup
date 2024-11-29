@@ -12,7 +12,7 @@ import { parseIp } from './functions/parseIp.js'
  */
 export function setup<T extends 'country' | 'geocode'>(): (ipInput: string) => Promise<T extends 'country' ? { country: string } | null : { latitude: number, longitude: number, country: string } | null> {
   const CDN_URL = __CDN_URL__
-  const MAIN_RECORD_SIZE = __DATA_TYPE__ === 'country' ? 2 : 8
+  const MAIN_RECORD_SIZE = __DATA_TYPE__ === 'country' ? 2 : 12
   const INDEXES: {
     4?: Uint32Array
     6?: BigUint64Array
