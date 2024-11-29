@@ -16,7 +16,7 @@
     "build:watch:geocode": "cd packages/geocode && pnpm build:watch",
     "build:watch:geocode-extra": "cd packages/geocode-extra && pnpm build:watch",
     "build:watch:ip-location-api": "cd packages/ip-location-api && pnpm build:watch",
-    "build:watch:util": "cd packages/util && pnpm build:watch",
+    "build:watch:core": "cd packages/core && pnpm build:watch",
     "test:ui": "vitest --ui --coverage",
     "test": "vitest --run --coverage",
     "release:all": "pnpm install && pnpm build && pnpm -r release"
