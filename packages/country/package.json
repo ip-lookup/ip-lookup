@@ -1,15 +1,22 @@
 {
   "name": "@ip-lookup/country",
   "type": "module",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "Browser api to lookup country from IP address",
-  "author": "sapics",
+  "author": {
+    "name": "Bas950",
+    "email": "me@bas950.com",
+    "url": "https://bas950.com"
+  },
   "license": "MIT",
-  "homepage": "https://github.com/sapics/ip-location-api",
+  "homepage": "https://github.com/ip-lookup/ip-lookup",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sapics/ip-location-api.git",
+    "url": "git://github.com/ip-lookup/ip-lookup.git",
     "directory": "packages/country"
+  },
+  "bugs": {
+    "url": "https://github.com/ip-lookup/ip-lookup/issues"
   },
   "keywords": [
     "location",
