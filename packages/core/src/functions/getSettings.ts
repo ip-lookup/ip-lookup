@@ -69,14 +69,6 @@ export interface IpLocationApiInputSettings {
    */
   smallMemoryFileSize?: number
   /**
-   * Whether to add country info in the result
-   * @default false
-   *
-   * @requires countries-list package (optional peer dependency)
-   * @link https://www.npmjs.com/package/countries-list
-   */
-  addCountryInfo?: boolean
-  /**
    * Whether to suppress logging
    * @default false
    */
@@ -99,7 +91,6 @@ export interface IpLocationApiSettings {
   locationRecordSize: number
   v4: LocalDatabase<4>
   v6: LocalDatabase<6>
-  addCountryInfo: boolean
   silent: boolean
 }
 
@@ -201,7 +192,6 @@ export function getSettings(settings?: IpLocationApiInputSettings): IpLocationAp
     locationRecordSize: getFieldsSize(fields.filter(field => (LOCATION_FIELDS as unknown as string[]).includes(field))),
     v4,
     v6,
-    addCountryInfo: mergedSettings.addCountryInfo,
     silent: mergedSettings.silent,
   })
 }

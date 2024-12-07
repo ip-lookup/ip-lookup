@@ -34,7 +34,6 @@ export const DEFAULT_SETTINGS: IpLocationApiSettings = {
   locationRecordSize: 0,
   v4,
   v6,
-  addCountryInfo: false,
   silent: false,
 }
 // eslint-disable-next-line import/no-mutable-exports
