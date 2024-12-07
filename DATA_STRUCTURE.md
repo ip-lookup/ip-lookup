@@ -9,7 +9,6 @@ The system processes geographical IP data from either MaxMind's GeoLite2 or DB-I
 The system supports two main data sources:
 
 - MaxMind GeoLite2: Licensed under CC BY-SA 4.0, requires attribution
-- DB-IP: Free lite version, licensed under CC BY 4.0
 
 ## Update Process
 
