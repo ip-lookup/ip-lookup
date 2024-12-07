@@ -81,7 +81,7 @@ async function processIpVersion(
         exportBuf.writeUInt16LE(dbList[j]!, line)
       }
       else {
-        const offset = line * settings.mainRecordSize
+        const offset = j * settings.mainRecordSize
 
         const locationId = dbInfo.readUInt32LE(offset)
         const latitude = dbInfo.readInt32LE(offset + 4)
